@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const { mongo, env } = require("./vars");
 
 // set mongoose Promise to Bluebird

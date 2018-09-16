@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const moment = require("moment-timezone");
 const jwt = require("jwt-simple");
 const uuidv4 = require("uuid/v4");
+
 const APIError = require("../utils/APIError");
 const { env, jwtSecret, jwtExpirationInterval } = require("../../config/vars");
 
