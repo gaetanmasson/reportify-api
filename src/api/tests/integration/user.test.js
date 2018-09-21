@@ -42,26 +42,40 @@ describe("Users API", async () => {
       branStark: {
         email: "branstark@gmail.com",
         password: passwordHashed,
-        name: "Bran Stark",
+        name: {
+          firstName: "Bran",
+          lastName: "Stark"
+        },
         role: "admin"
       },
       jonSnow: {
         email: "jonsnow@gmail.com",
         password: passwordHashed,
-        name: "Jon Snow"
+        name: {
+          firstName: "Jon",
+          lastName: "Snow"
+        }
       }
     };
 
     user = {
       email: "gmassonfr@gmail.com",
       password,
-      name: "Gaetan Masson"
+      name: {
+        firstName: "Gaetan",
+        middleName: "Jean Marcel",
+        lastName: "Masson"
+      }
     };
 
     admin = {
       email: "gmassonfr@gmail.com",
       password,
-      name: "Gaetan Masson",
+      name: {
+        firstName: "Gaetan",
+        middleName: "Jean Marcel",
+        lastName: "Masson"
+      },
       role: "admin"
     };
 
