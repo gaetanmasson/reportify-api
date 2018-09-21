@@ -35,10 +35,24 @@ const userSchema = new mongoose.Schema(
       maxlength: 128
     },
     name: {
-      type: String,
-      maxlength: 128,
-      index: true,
-      trim: true
+      firstName: {
+        type: String,
+        maxlength: 128,
+        index: true,
+        trim: true
+      },
+      middleName: {
+        type: String,
+        maxlength: 128,
+        index: true,
+        trim: true
+      },
+      lastName: {
+        type: String,
+        maxlength: 128,
+        index: true,
+        trim: true
+      }
     },
     services: {
       facebook: String,
