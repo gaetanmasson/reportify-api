@@ -91,16 +91,32 @@ userSchema.pre("save", async function save(next) {
   }
 });
 
+userSchema.virtual("fullName").get(function fullName() {
+  const firstName = this.name.firstName ? `${this.name.firstName} ` : "";
+  const middleName = this.name.middleName ? `${this.name.middleName} ` : "";
+  const lastName = this.name.lastName ? `${this.name.lastName}` : "";
+
+  return `${firstName}${middleName}${lastName}`;
+});
+
 /**
  * Methods
  */
 userSchema.method({
   transform() {
     const transformed = {};
-    const fields = ["id", "name", "email", "picture", "role", "createdAt"];
+    const fields = [
+      "id",
+      "name",
+      "fullName",
+      "email",
+      "picture",
+      "role",
+      "createdAt"
+    ];
 
     fields.forEach(field => {
-      transformed[field] = this[field];
+      if (this[field]) transformed[field] = this[field];
     });
 
     return transformed;

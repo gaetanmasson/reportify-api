@@ -2,6 +2,7 @@ const httpStatus = require("http-status");
 const { omit } = require("lodash");
 
 const User = require("../models/user.model");
+const APIError = require("../utils/APIError");
 const { handler: errorHandler } = require("../middlewares/error");
 
 /**
@@ -53,8 +54,8 @@ exports.replace = async (req, res, next) => {
   try {
     const { user } = req.locals;
     const newUser = new User(req.body);
-    const ommitRole = user.role !== "admin" ? "role" : "";
-    const newUserObject = omit(newUser.toObject(), "_id", ommitRole);
+    const omitRole = user.role !== "admin" ? "role" : "";
+    const newUserObject = omit(newUser.toObject(), "_id", omitRole);
 
     await user.update(newUserObject, { override: true, upsert: true });
     const savedUser = await User.findById(user._id);
@@ -70,14 +71,41 @@ exports.replace = async (req, res, next) => {
  * @public
  */
 exports.update = (req, res, next) => {
-  const ommitRole = req.locals.user.role !== "admin" ? "role" : "";
-  const updatedUser = omit(req.body, ommitRole);
+  const omitRole = req.locals.user.role !== "admin" ? "role" : "";
+  const updatedUser = omit(req.body, omitRole, "password");
   const user = Object.assign(req.locals.user, updatedUser);
 
   user
     .save()
     .then(savedUser => res.json(savedUser.transform()))
     .catch(e => next(User.checkDuplicateEmail(e)));
+};
+
+/**
+ * Update existing user password
+ * @public
+ */
+exports.updatePassword = async (req, res, next) => {
+  const err = {
+    status: httpStatus.NOT_FOUND,
+    isPublic: true
+  };
+
+  try {
+    if (await req.locals.user.passwordMatches(req.body.password)) {
+      const user = Object.assign(req.locals.user);
+      user.set({ password: req.body.newPassword });
+      user
+        .save()
+        .then(savedUser => res.json(savedUser.transform()))
+        .catch(e => next(e));
+    } else {
+      err.message = "Incorrect password";
+      throw new APIError(err);
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**

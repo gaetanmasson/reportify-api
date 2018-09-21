@@ -4,6 +4,7 @@ const httpStatus = require("http-status");
 const { expect } = require("chai");
 const sinon = require("sinon");
 const moment = require("moment-timezone");
+
 const app = require("../../../index");
 const User = require("../../models/user.model");
 const RefreshToken = require("../../models/refreshToken.model");
@@ -85,7 +86,7 @@ describe("Authentication API", () => {
           expect(res.body.token).to.have.a.property("accessToken");
           expect(res.body.token).to.have.a.property("refreshToken");
           expect(res.body.token).to.have.a.property("expiresIn");
-          expect(res.body.user).to.include(user);
+          expect(res.body.user).to.deep.include(user);
         });
     });
 
@@ -147,7 +148,7 @@ describe("Authentication API", () => {
           expect(res.body.token).to.have.a.property("accessToken");
           expect(res.body.token).to.have.a.property("refreshToken");
           expect(res.body.token).to.have.a.property("expiresIn");
-          expect(res.body.user).to.include(dbUser);
+          expect(res.body.user).to.deep.include(dbUser);
         });
     });
 

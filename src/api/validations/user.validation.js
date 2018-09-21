@@ -67,15 +67,31 @@ module.exports = {
   updateUser: {
     body: {
       email: Joi.string().email(),
-      password: Joi.string()
-        .min(6)
-        .max(128),
       name: Joi.object({
         firstName: Joi.string().max(128),
         middleName: Joi.string().max(128),
         lastName: Joi.string().max(128)
       }),
       role: Joi.string().valid(User.roles)
+    },
+    params: {
+      userId: Joi.string()
+        .regex(/^[a-fA-F0-9]{24}$/)
+        .required()
+    }
+  },
+
+  // PATCH /v1/users/:usersId/update-password
+  updatePassword: {
+    body: {
+      password: Joi.string()
+        .min(6)
+        .max(128)
+        .required(),
+      newPassword: Joi.string()
+        .min(6)
+        .max(128)
+        .required()
     },
     params: {
       userId: Joi.string()

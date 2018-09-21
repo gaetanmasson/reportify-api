@@ -98,7 +98,7 @@ describe("Users API", async () => {
         .expect(httpStatus.CREATED)
         .then(res => {
           delete admin.password;
-          expect(res.body).to.include(admin);
+          expect(res.body).to.deep.include(admin);
         });
     });
 
@@ -293,7 +293,7 @@ describe("Users API", async () => {
         .set("Authorization", `Bearer ${adminAccessToken}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body).to.include(dbUsers.branStark);
+          expect(res.body).to.deep.include(dbUsers.branStark);
         });
     });
 
@@ -345,7 +345,7 @@ describe("Users API", async () => {
         .expect(httpStatus.OK)
         .then(res => {
           delete user.password;
-          expect(res.body).to.include(user);
+          expect(res.body).to.deep.include(user);
           expect(res.body.role).to.be.equal("user");
         });
     });
@@ -441,7 +441,7 @@ describe("Users API", async () => {
         .send({ name })
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.name).to.be.equal(name);
+          expect(res.body.name).to.be.deep.equal(name);
           expect(res.body.email).to.be.equal(dbUsers.branStark.email);
         });
     });
@@ -456,7 +456,7 @@ describe("Users API", async () => {
         .send()
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body).to.include(dbUsers.branStark);
+          expect(res.body).to.deep.include(dbUsers.branStark);
         });
     });
 
@@ -548,7 +548,7 @@ describe("Users API", async () => {
         .set("Authorization", `Bearer ${userAccessToken}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body).to.include(dbUsers.jonSnow);
+          expect(res.body).to.deep.include(dbUsers.jonSnow);
         });
     });
 
