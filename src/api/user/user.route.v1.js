@@ -1,20 +1,20 @@
 const express = require("express");
 const validate = require("express-validation");
 
-const controller = require("../../controllers/user.controller");
+const controller = require("./user.controller");
 const {
   authorize,
   ADMIN,
   LOGGED_USER,
   LOGGED_USER_OR_ADMIN
-} = require("../../middlewares/auth");
+} = require("../_middlewares/auth");
 const {
   listUsers,
   createUser,
   replaceUser,
   updateUser,
   updatePassword
-} = require("../../validations/user.validation");
+} = require("./user.validation");
 
 const router = express.Router();
 

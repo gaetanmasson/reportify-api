@@ -1,8 +1,8 @@
 const httpStatus = require("http-status");
 const passport = require("passport");
 
-const User = require("../models/user.model");
-const APIError = require("../utils/APIError");
+const User = require("../user/user.model");
+const APIError = require("../_utils/APIError");
 
 const ADMIN = "admin";
 const LOGGED_USER = "_loggedUser";

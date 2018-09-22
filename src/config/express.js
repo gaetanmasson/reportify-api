@@ -7,10 +7,10 @@ const cors = require("cors");
 const helmet = require("helmet");
 const passport = require("passport");
 
-const routes = require("../api/routes/v1");
+const routes = require("../api/_routes/v1");
 const { logs } = require("./vars");
 const strategies = require("./passport");
-const error = require("../api/middlewares/error");
+const error = require("../api/_middlewares/error");
 
 /**
  * Express instance

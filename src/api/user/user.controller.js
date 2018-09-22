@@ -1,9 +1,9 @@
 const httpStatus = require("http-status");
 const { omit } = require("lodash");
 
-const User = require("../models/user.model");
-const APIError = require("../utils/APIError");
-const { handler: errorHandler } = require("../middlewares/error");
+const User = require("./user.model");
+const APIError = require("../_utils/APIError");
+const { handler: errorHandler } = require("../_middlewares/error");
 
 /**
  * Load user and append to req.
