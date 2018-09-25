@@ -3,7 +3,14 @@ const validate = require("express-validation");
 
 const controller = require("./auth.controller");
 const oAuthLogin = require("../_middlewares/auth").oAuth;
-const { login, register, oAuth, refresh } = require("./auth.validation");
+const {
+  login,
+  register,
+  oAuth,
+  refresh,
+  forgot,
+  reset
+} = require("./auth.validation");
 
 const router = express.Router();
 
@@ -87,8 +94,41 @@ router.route("/login").post(validate(login), controller.login);
 router.route("/refresh-token").post(validate(refresh), controller.refresh);
 
 /**
- * TODO: POST /v1/auth/reset-password
+ * @api {post} v1/auth/refresh-token Refresh Token
+ * @apiDescription Refresh expired accessToken
+ * @apiVersion 1.0.0
+ * @apiName RefreshToken
+ * @apiGroup Auth
+ * @apiPermission public
+ *
+ * @apiParam  {String}  email  User's email
+ *
+ * @apiSuccess {String}  tokenType  Access Token's type
+ *
+ * @apiError (Bad Request 400)   ValidationError  Some parameters may contain invalid values
+ * @apiError (Unauthorized 401)  Unauthorized     Incorrect email or refreshToken
  */
+router.route("/forgot-password").post(validate(forgot), controller.forgot);
+
+/**
+ * @api {post} v1/auth/refresh-token Refresh Token
+ * @apiDescription Refresh expired accessToken
+ * @apiVersion 1.0.0
+ * @apiName RefreshToken
+ * @apiGroup Auth
+ * @apiPermission public
+ *
+ * @apiParam  {String}  password       User's new password
+ *
+ * @apiSuccess {String}  tokenType     Access Token's type
+ * @apiSuccess {String}  accessToken   Authorization Token
+ * @apiSuccess {String}  refreshToken  Token to get a new accessToken after expiration time
+ * @apiSuccess {Number}  expiresIn     Access Token's expiration time in milliseconds
+ *
+ * @apiError (Bad Request 400)  ValidationError  Some parameters may contain invalid values
+ * @apiError (Unauthorized 401)  Unauthorized     Incorrect email or refreshToken
+ */
+router.route("/reset-password/:token").post(validate(reset), controller.reset);
 
 /**
  * @api {post} v1/auth/facebook Facebook Login
