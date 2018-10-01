@@ -7,15 +7,21 @@ require("dotenv-safe").load({
 });
 
 module.exports = {
+  authEmail: {
+    host: process.env.EMAIL_HOST,
+    password: process.env.EMAIL_PASSWORD,
+    port: process.env.EMAIL_PORT,
+    user: process.env.EMAIL_USER
+  },
   env: process.env.NODE_ENV,
-  port: process.env.PORT,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpirationInterval: process.env.JWT_EXPIRATION_MINUTES,
+  logs: process.env.NODE_ENV === "production" ? "combined" : "dev",
   mongo: {
     uri:
       process.env.NODE_ENV === "test"
         ? process.env.MONGO_URI_TESTS
         : process.env.MONGO_URI
   },
-  logs: process.env.NODE_ENV === "production" ? "combined" : "dev"
+  port: process.env.PORT
 };
