@@ -128,7 +128,9 @@ router.route("/forgot-password").post(validate(forgot), controller.forgot);
  * @apiError (Bad Request 400)  ValidationError  Some parameters may contain invalid values
  * @apiError (Unauthorized 401)  Unauthorized     Incorrect email or refreshToken
  */
-router.route("/reset-password/:token").post(validate(reset), controller.reset);
+router
+  .route("/reset-password/:id/:token")
+  .post(validate(reset), controller.reset);
 
 /**
  * @api {post} v1/auth/facebook Facebook Login
