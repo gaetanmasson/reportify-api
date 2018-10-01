@@ -4,6 +4,7 @@ const moment = require("moment-timezone");
 const { jwtExpirationInterval } = require("../../config/vars");
 const RefreshToken = require("./refreshToken.model");
 const User = require("../user/user.model");
+const { transporter } = require("../../config/nodemailer");
 
 /**
  * Returns a formated object with tokens
@@ -19,6 +20,26 @@ function generateTokenResponse(user, accessToken) {
     refreshToken,
     expiresIn
   };
+}
+
+// TODO: make root url dynamic and test this function
+
+function sendResetPasswordEmail(user, accessToken) {
+  const { _id, firstName, lastName } = user;
+  const url = `http://localhost:3000/${_id}/${accessToken}`;
+
+  const mailOptions = {
+    from: "test@test.com",
+    to: user.email,
+    subject: "Reset your password",
+    template: "email",
+    context: {
+      firstName,
+      lastName,
+      url
+    }
+  };
+  return transporter.sendMail(mailOptions);
 }
 
 /**
@@ -86,6 +107,18 @@ exports.refresh = async (req, res, next) => {
     });
     const response = generateTokenResponse(user, accessToken);
     return res.json(response);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// TODO: finish controller
+
+exports.forgot = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findByEmailAndGenerateToken({ email });
+    return sendResetPasswordEmail(user);
   } catch (error) {
     return next(error);
   }
