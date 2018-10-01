@@ -133,6 +133,17 @@ userSchema.method({
     return jwt.encode(playload, jwtSecret);
   },
 
+  resetToken() {
+    const playload = {
+      exp: moment()
+        .add(30, "minutes")
+        .unix(),
+      iat: moment().unix(),
+      sub: this._id
+    };
+    return jwt.encode(playload, jwtSecret + this.password);
+  },
+
   async passwordMatches(password) {
     return bcrypt.compare(password, this.password);
   }
